@@ -11,7 +11,13 @@ const getOfficeImages = async (): Promise<IOffice[]> => {
   return result
 }
 
+const deleteOfficeImage = async (id: string) => {
+  const result = await Office.findByIdAndDelete(id)
+  return result
+}
+
 export const OfficeService = {
   postOfficeImages,
   getOfficeImages,
+  deleteOfficeImage,
 }

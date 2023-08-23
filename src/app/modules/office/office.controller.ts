@@ -25,7 +25,20 @@ const getOfficeImages = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const deleteOfficeImage = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id
+
+  const result = await OfficeService.deleteOfficeImage(id)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Image deleted Successfully',
+    data: result,
+  })
+})
+
 export const OfficeController = {
   postOfficeImages,
   getOfficeImages,
+  deleteOfficeImage,
 }
