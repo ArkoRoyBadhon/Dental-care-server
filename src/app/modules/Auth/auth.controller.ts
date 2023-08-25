@@ -20,7 +20,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body
-  console.log(loginData)
+  // console.log(loginData)
 
   const result = await UserService.loginUser(loginData)
   const { refreshToken, accessToken, ...others } = result

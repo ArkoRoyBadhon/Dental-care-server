@@ -16,7 +16,7 @@ const createUser = async (payload: IUser): Promise<IUser> => {
   }
 
   const info = { ...payload, role: 'user' }
-  console.log(info)
+  // console.log(info)
 
   const result = await User.create(info)
   return result
