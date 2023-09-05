@@ -8,6 +8,8 @@ import { Secret } from 'jsonwebtoken'
 
 const createUser = async (payload: IUser): Promise<IUser> => {
   const existingUser = await User.findOne({
+    // 'name.firstName': payload.name.firstName,
+    // 'name.lastName': payload.name.lastName,
     email: payload?.email,
   })
 

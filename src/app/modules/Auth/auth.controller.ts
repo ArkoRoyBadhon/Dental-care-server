@@ -1,9 +1,10 @@
+/* eslint-disable no-constant-condition */
 import httpStatus from 'http-status'
 import catchAsync from '../../../shared/catchAsync'
 import sendResponse from '../../../shared/sendResponse'
 import { Request, Response } from 'express'
 import { UserService } from './auth.service'
-import config from '../../../config'
+// import config from '../../../config'
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const { ...userData } = req.body
@@ -20,17 +21,20 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body
-  // console.log(loginData)
+  // console.log("LOgin",loginData)
 
   const result = await UserService.loginUser(loginData)
-  const { refreshToken, accessToken, ...others } = result
+  // const { refreshToken, accessToken, ...others } = result
+  const { refreshToken, accessToken } = result
 
-  // console.log(result)
+  // console.log("Login RES",result)
 
   const cookieOptions = {
-    secure: config.env === 'development',
+    // secure: true,
     httpOnly: true,
   }
+
+  // if((config.env = "production")) cookieOptions.secure = true;
 
   res.cookie('refreshToken', refreshToken, cookieOptions)
   res.cookie('accessToken', accessToken, cookieOptions)
@@ -39,13 +43,13 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'User logged In successfully !',
-    data: others,
+    data: accessToken,
   })
 })
 
 const LogOut = catchAsync(async (req: Request, res: Response) => {
   const cookieOptions = {
-    secure: process.env.NODE_ENV === 'development',
+    // secure: config.env === 'development',
     httpOnly: true,
     expires: new Date(0),
   }
@@ -62,6 +66,8 @@ const LogOut = catchAsync(async (req: Request, res: Response) => {
 
 const getUser = catchAsync(async (req: Request, res: Response) => {
   const authorizationHeader = req.cookies.accessToken
+
+  // console.log("Test", authorizationHeader);
 
   if (typeof authorizationHeader === 'string') {
     const token = authorizationHeader.split(' ')[1] || authorizationHeader
